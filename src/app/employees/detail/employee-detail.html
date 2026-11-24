@@ -1,0 +1,42 @@
+<div data-testid="employee-layout" class="grid h-dvh grid-cols-[248px_minmax(0,1fr)] overflow-hidden bg-white max-[900px]:grid-rows-[auto_minmax(0,1fr)] max-[900px]:grid-cols-1">
+  <app-employee-sidebar />
+  <div data-testid="employee-content" class="flex min-h-0 min-w-0 flex-col bg-white text-ink">
+    <header class="flex h-[74px] shrink-0 items-center border-b border-line bg-white px-[clamp(1.4rem,3vw,3.2rem)] text-[0.78rem] text-muted max-[900px]:h-[55px]">
+      <div class="flex gap-[0.65rem]">Workspace <span>/</span> <a routerLink="/employees" class="text-muted no-underline hover:text-teal">Employees</a> <span>/</span> <strong class="text-ink">Employee detail</strong></div>
+    </header>
+    <main class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-[clamp(1.25rem,3vw,3rem)] py-8 max-[900px]:px-5 max-[900px]:py-6">
+      <div class="mx-auto max-w-[1200px]">
+        @if (employee(); as person) {
+          <h1 class="mb-6 font-display text-[clamp(1.5rem,3vw,2rem)] font-semibold tracking-[-0.04em]">{{ person.firstName }} {{ person.lastName }}</h1>
+          <div class="space-y-5">
+            <section data-testid="detail-section" class="overflow-hidden rounded-[4px] border border-line bg-white">
+              <header class="bg-surface-soft px-6 py-3"><h2 class="text-sm font-semibold text-ink">Personal information</h2></header>
+              <dl class="grid grid-cols-2 gap-x-5 gap-y-5 px-6 py-6 max-[600px]:grid-cols-1 max-[600px]:gap-y-4 max-[600px]:px-4 max-[600px]:py-5">
+                <div class="min-w-0"><dt class="mb-1 text-xs font-bold">First name</dt><dd class="m-0 wrap-anywhere text-[12px]">{{ person.firstName }}</dd></div>
+                <div class="min-w-0"><dt class="mb-1 text-xs font-bold">Last name</dt><dd class="m-0 wrap-anywhere text-[12px]">{{ person.lastName }}</dd></div>
+                <div class="min-w-0"><dt class="mb-1 text-xs font-bold">Username</dt><dd class="m-0 wrap-anywhere text-[12px]">{{ person.username }}</dd></div>
+                <div class="min-w-0"><dt class="mb-1 text-xs font-bold">Email address</dt><dd class="m-0 wrap-anywhere text-[12px]">{{ person.email }}</dd></div>
+                <div class="min-w-0"><dt class="mb-1 text-xs font-bold">Date of birth</dt><dd class="m-0 wrap-anywhere text-[12px]">{{ dateTime(person.birthDate) }}</dd></div>
+              </dl>
+            </section>
+            <section data-testid="detail-section" class="overflow-hidden rounded-[4px] border border-line bg-white">
+              <header class="bg-surface-soft px-6 py-3"><h2 class="text-sm font-semibold text-ink">Work details</h2></header>
+              <dl class="grid grid-cols-2 gap-x-5 gap-y-5 px-6 py-6 max-[600px]:grid-cols-1 max-[600px]:gap-y-4 max-[600px]:px-4 max-[600px]:py-5">
+                <div class="min-w-0"><dt class="mb-1 text-xs font-bold">Group</dt><dd class="m-0 wrap-anywhere text-[12px]">{{ person.group }}</dd></div>
+                <div class="min-w-0"><dt class="mb-1 text-xs font-bold">Status</dt><dd class="m-0 wrap-anywhere text-[12px]">{{ person.status }}</dd></div>
+                <div class="min-w-0"><dt class="mb-1 text-xs font-bold">Basic salary</dt><dd class="m-0 wrap-anywhere text-[12px] tabular-nums">{{ salary(person.basicSalary) }}</dd></div>
+                <div class="min-w-0"><dt class="mb-1 text-xs font-bold">Description date</dt><dd class="m-0 wrap-anywhere text-[12px]">{{ dateTime(person.description) }}</dd></div>
+              </dl>
+            </section>
+          </div>
+        } @else {
+          <h1 class="mb-6 font-display text-[clamp(1.5rem,3vw,2rem)] font-semibold tracking-[-0.04em]">Employee not found</h1>
+          <p class="text-sm text-muted">This employee record is unavailable. Return to the directory to find another employee.</p>
+        }
+      </div>
+    </main>
+    <footer data-testid="detail-footer" class="flex shrink-0 items-center justify-end border-t border-line bg-white px-[clamp(1.25rem,3vw,3rem)] py-3 max-[560px]:px-5">
+      <a routerLink="/employees" class="inline-flex h-8 items-center justify-center rounded-[4px] bg-teal px-3 text-xs font-bold text-white no-underline hover:bg-[#1d665d] max-[560px]:w-full">OK</a>
+    </footer>
+  </div>
+</div>

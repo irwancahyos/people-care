@@ -1,3 +1,114 @@
-/* You can add global styles to this file, and also import other style files */
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
+
+@theme {
+  --color-ink: #18343a;
+  --color-teal: #247b70;
+  --color-mint: #88d8c4;
+  --color-surface: #f5f8f7;
+  --color-surface-soft: #f4f8f6;
+  --color-line: #e4ece9;
+  --color-muted: #788c8c;
+  --font-body: 'DM Sans', Arial, sans-serif;
+  --font-display: 'Manrope', Arial, sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --animate-float: float 4.8s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(-5px);
+    }
+    50% {
+      transform: translateY(5px);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  body {
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+  }
+}
+
+@keyframes modal-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-backdrop-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes modal-card-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes modal-card-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(8px) scale(0.98); }
+}
+
+@keyframes mobile-menu-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mobile-menu-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .demo-modal-backdrop { animation: modal-backdrop-in 220ms ease-out both; }
+  .demo-modal-backdrop.is-closing { animation: modal-backdrop-out 220ms ease-in both; }
+  .demo-modal-card { animation: modal-card-in 220ms ease-out both; }
+  .demo-modal-card.is-closing { animation: modal-card-out 220ms ease-in both; }
+  .mobile-menu-panel { animation: mobile-menu-in 220ms ease-out both; }
+  .mobile-menu-panel.is-closing { animation: mobile-menu-out 220ms ease-in both; }
+  .menu-lines > span { transition: transform 220ms ease, opacity 180ms ease; }
+}
+
+.menu-lines {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.menu-lines > span {
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transform-origin: center;
+}
+
+.menu-toggle.is-open .menu-lines > span:first-child { transform: translateY(6px) rotate(45deg); }
+.menu-toggle.is-open .menu-lines > span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.menu-toggle.is-open .menu-lines > span:last-child { transform: translateY(-6px) rotate(-45deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
