@@ -6,6 +6,7 @@ import { LucideArrowRight, LucideCircleHelp } from '@lucide/angular';
 import { FormInput } from '../shared/form-input';
 import { ActionButton } from '../shared/action-button';
 import { AuthService } from './auth.service';
+import { DEMO_CREDENTIALS } from './demo-credentials';
 import { requiredText } from '../employees/add/employee-validators';
 
 @Component({
@@ -15,6 +16,7 @@ import { requiredText } from '../employees/add/employee-validators';
 })
 export class Login implements OnInit, OnDestroy {
   @ViewChild('formPanel') private formPanel?: ElementRef<HTMLElement>;
+  readonly credentials = DEMO_CREDENTIALS;
   readonly mobileHintOpen = signal(false);
   readonly mobileHintClosing = signal(false);
   private hintTimer?: ReturnType<typeof setTimeout>;
@@ -44,7 +46,9 @@ export class Login implements OnInit, OnDestroy {
     this.closeTimer = setTimeout(() => {
       this.mobileHintOpen.set(false);
       this.formPanel?.nativeElement.scrollIntoView({
-        behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+        behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+          ? 'instant'
+          : 'smooth',
         block: 'start',
       });
     }, 220);

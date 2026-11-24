@@ -75,7 +75,7 @@
         >
           <span label-suffix data-testid="credential-help" class="group relative hidden items-center min-[1024px]:inline-flex">
             <button type="button" aria-label="Demo username" aria-describedby="username-hint" class="grid size-5 cursor-help place-items-center rounded-full border-0 bg-transparent p-0 text-muted hover:text-teal focus-visible:outline-2 focus-visible:outline-teal"><svg lucideCircleHelp size="15" aria-hidden="true"></svg></button>
-            <span id="username-hint" role="tooltip" class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-52 -translate-x-1/2 rounded-sm bg-ink px-3 py-2 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">For this demo, use <strong>admin</strong> as username.</span>
+            <span id="username-hint" role="tooltip" class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-52 -translate-x-1/2 rounded-sm bg-ink px-3 py-2 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">For this demo, use <strong>{{ credentials.username }}</strong> as username.</span>
           </span>
         </app-form-input>
         <app-form-input
@@ -90,7 +90,7 @@
         >
           <span label-suffix data-testid="credential-help" class="group relative hidden items-center min-[1024px]:inline-flex">
             <button type="button" aria-label="Demo password" aria-describedby="password-hint" class="grid size-5 cursor-help place-items-center rounded-full border-0 bg-transparent p-0 text-muted hover:text-teal focus-visible:outline-2 focus-visible:outline-teal"><svg lucideCircleHelp size="15" aria-hidden="true"></svg></button>
-            <span id="password-hint" role="tooltip" class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-52 -translate-x-1/2 rounded-sm bg-ink px-3 py-2 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">For this demo, use <strong>admin123</strong> as password.</span>
+            <span id="password-hint" role="tooltip" class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-52 -translate-x-1/2 rounded-sm bg-ink px-3 py-2 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">For this demo, use <strong>{{ credentials.password }}</strong> as password.</span>
           </span>
         </app-form-input>
         <app-action-button class="mt-2 block" [fullWidth]="true">
@@ -110,8 +110,8 @@
         <div class="relative flex min-h-87.5 flex-col justify-end bg-linear-to-b from-white/25 via-white/65 to-white/90 px-6 pt-16 pb-6">
           <h2 id="demo-login-title" class="mb-4 w-fit bg-white/90 px-3 py-1.5 font-display text-[1.6rem] leading-tight font-semibold tracking-tight">Dummy account</h2>
           <dl data-testid="demo-login-credentials" class="divide-y divide-line rounded-lg bg-white px-4 text-sm shadow-sm">
-            <div class="flex items-center justify-between gap-3 py-3"><dt class="text-muted">Username</dt><dd class="m-0 font-mono font-semibold text-ink">admin</dd></div>
-            <div class="flex items-center justify-between gap-3 py-3"><dt class="text-muted">Password</dt><dd class="m-0 font-mono font-semibold text-ink">admin123</dd></div>
+            <div class="flex items-center justify-between gap-3 py-3"><dt class="text-muted">Username</dt><dd class="m-0 font-mono font-semibold text-ink">{{ credentials.username }}</dd></div>
+            <div class="flex items-center justify-between gap-3 py-3"><dt class="text-muted">Password</dt><dd class="m-0 font-mono font-semibold text-ink">{{ credentials.password }}</dd></div>
           </dl>
           <button type="button" (click)="understandDemoCredentials()" class="mt-4 h-11 w-full cursor-pointer rounded-sm border-0 bg-teal px-4 text-sm font-semibold text-white hover:bg-[#1d665d] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal">Understand</button>
         </div>
