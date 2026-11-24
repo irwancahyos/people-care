@@ -2,6 +2,8 @@
 
 People Desk is a responsive employee-management backoffice demo. It provides a sign-in screen, an employee directory, a form for adding employees, and a read-only employee detail page. It runs entirely in the browser: there is no backend, and employees added during a session disappear after a full page refresh.
 
+**Live demo:** [people-care-ten.vercel.app](https://people-care-ten.vercel.app/)
+
 ## Tech stack
 
 - Angular 22 with standalone components, routing, signals, and reactive forms
@@ -67,9 +69,26 @@ npm run build
 
 ## Dummy account
 
-| Field | Value |
-| --- | --- |
-| Username | `admin` |
+| Field    | Value      |
+| -------- | ---------- |
+| Username | `admin`    |
 | Password | `admin123` |
 
 These credentials are for the demo only. Authentication is client-side and resets on a full page refresh; it must not be treated as production security.
+
+### Customize demo credentials
+
+Copy the tracked example file, then edit the local copy before running `npm start` or `npm run build`:
+
+```bash
+cp .env.example .env.local
+```
+
+For example, set these values in `.env.local`:
+
+```dotenv
+DEMO_USERNAME=reviewer
+DEMO_PASSWORD="review pass"
+```
+
+When `.env.local` exists, its values take precedence. Otherwise, the build reads `DEMO_USERNAME` and `DEMO_PASSWORD` from the process environment (including Vercel project environment variables). A missing or empty value falls back independently to `admin` or `admin123`. The username and password shown in the desktop hints and mobile dialog match the pair accepted by the login form. Restart the local server after editing `.env.local`; redeploy Vercel after changing its environment variables. `.env.local` is Git-ignored. These values are included in the public browser bundle and displayed on the login screen, so never use a real password or treat them as security credentials.
