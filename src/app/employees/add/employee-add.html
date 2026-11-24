@@ -1,0 +1,114 @@
+<div data-testid="employee-layout" class="grid h-dvh grid-cols-[248px_minmax(0,1fr)] overflow-hidden bg-white max-[900px]:grid-rows-[auto_minmax(0,1fr)] max-[900px]:grid-cols-1">
+  <app-employee-sidebar />
+  <div data-testid="employee-content" class="flex min-h-0 min-w-0 flex-col bg-white text-ink">
+    <header class="flex h-[74px] shrink-0 items-center border-b border-line bg-white px-[clamp(1.4rem,3vw,3.2rem)] text-[0.78rem] text-muted max-[900px]:h-[55px]">
+      <div class="flex gap-[0.65rem]">Workspace <span>/</span> <a routerLink="/employees" class="text-muted no-underline hover:text-teal">Employees</a> <span>/</span> <strong class="text-ink">Add employee</strong></div>
+    </header>
+    <main class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-[clamp(1.25rem,3vw,3rem)] py-8 max-[900px]:px-5 max-[900px]:py-6">
+      <div class="mx-auto max-w-[1200px]">
+        <h1 class="mb-6 font-display text-[clamp(1.5rem,3vw,2rem)] font-semibold tracking-[-0.04em]">Add employee</h1>
+    <form id="add-employee-form"
+      class="space-y-5"
+      [formGroup]="form"
+      (ngSubmit)="save()"
+      novalidate
+    >
+      <section data-testid="form-section" class="overflow-visible rounded-[4px] border border-line bg-white">
+        <header class="rounded-t-[4px] bg-surface-soft px-6 py-3"><h2 class="text-sm font-semibold text-ink">Personal information</h2></header>
+        <div class="grid grid-cols-2 gap-x-5 gap-y-5 px-6 py-6 max-[600px]:grid-cols-1 max-[600px]:gap-y-4 max-[600px]:px-4 max-[600px]:py-5"
+        >
+          <app-form-input fieldId="firstName" label="First name" placeholder="e.g. Alex" errorMessage="First name is required." [required]="true" [compact]="true" [control]="form.controls.firstName" />
+          <app-form-input fieldId="lastName" label="Last name" placeholder="e.g. Morgan" errorMessage="Last name is required." [required]="true" [compact]="true" [control]="form.controls.lastName" />
+          <app-form-input fieldId="username" label="Username" placeholder="e.g. alex.morgan" errorMessage="Username is required." [required]="true" [compact]="true" [control]="form.controls.username" />
+          <app-form-input fieldId="email" label="Email address" type="email" placeholder="e.g. alex@company.com" errorMessage="Enter a valid email address." [required]="true" [compact]="true" [control]="form.controls.email" />
+          <app-form-input fieldId="birthDate" label="Date and time of birth" type="datetime-local" [max]="now" errorMessage="Enter a valid birth date and time, not in the future." [required]="true" [compact]="true" [control]="form.controls.birthDate" />
+        </div>
+      </section>
+      <section data-testid="form-section" class="overflow-visible rounded-[4px] border border-line bg-white">
+        <header class="rounded-t-[4px] bg-surface-soft px-6 py-3"><h2 class="text-sm font-semibold text-ink">Work details</h2></header>
+        <div class="grid grid-cols-2 gap-x-5 gap-y-5 px-6 py-6 max-[600px]:grid-cols-1 max-[600px]:gap-y-4 max-[600px]:px-4 max-[600px]:py-5"
+        >
+          <div class="relative min-w-0" (focusout)="closeGroupOnFocusOut($event)">
+            <label for="group-search" class="mb-1 block text-xs font-bold"
+              >Group <span class="text-teal">*</span></label
+            ><input
+              id="group-search"
+              type="search"
+              role="combobox"
+              [attr.aria-expanded]="groupOpen()"
+              aria-controls="group-options"
+              aria-autocomplete="list"
+              [value]="groupOpen() ? groupSearch() : form.controls.group.value"
+              (focus)="groupOpen.set(true)"
+              (keydown.escape)="groupOpen.set(false)"
+              (input)="
+                groupSearch.set($any($event.target).value);
+                groupOpen.set(true);
+                form.controls.group.setValue('')
+              "
+              placeholder="Search and select a group"
+              autocomplete="off"
+              class="h-8 w-full rounded-[4px] border border-line bg-white px-3 text-[12px] text-ink outline-none placeholder:text-[11px] placeholder:text-muted focus:border-teal"
+            />
+            @if (groupOpen()) {
+              <div
+                class="absolute top-[calc(100%+0.25rem)] right-0 left-0 z-[5] max-h-[190px] overflow-y-auto rounded-[0.5rem] border border-line bg-white p-[0.35rem] shadow-[0_12px_32px_rgba(20,48,53,0.12)]"
+                id="group-options"
+                role="listbox"
+              >
+                @for (group of groups(); track group) {
+                  <button
+                    type="button"
+                    role="option"
+                    [attr.aria-selected]="form.controls.group.value === group"
+                    (click)="selectGroup(group)"
+                    class="block w-full cursor-pointer rounded-[0.3rem] border-0 bg-transparent px-[0.7rem] py-[0.65rem] text-left font-body text-[0.8rem] font-medium text-ink hover:bg-surface-soft focus-visible:bg-surface-soft"
+                  >
+                    {{ group }}
+                  </button>
+                } @empty {
+                  <span class="block p-[0.6rem] text-[0.8rem] text-muted">No matching groups</span>
+                }
+              </div>
+            }
+            @if (form.controls.group.touched && form.controls.group.invalid) {
+              <small class="mt-[0.45rem] block text-[0.7rem] text-[#b63d39]">Select a group.</small>
+            }
+          </div>
+          <div class="relative min-w-0" (focusout)="closeStatusOnFocusOut($event)">
+            <label for="status-search" class="mb-1 block text-xs font-bold">Status <span class="text-teal">*</span></label>
+            <input id="status-search" type="search" role="combobox" aria-controls="status-options" aria-autocomplete="list" [attr.aria-expanded]="statusOpen()" [attr.aria-invalid]="form.controls.status.touched && form.controls.status.invalid" [value]="statusOpen() ? statusSearch() : form.controls.status.value" (focus)="statusOpen.set(true)" (keydown.escape)="statusOpen.set(false)" (input)="statusSearch.set($any($event.target).value); statusOpen.set(true); form.controls.status.setValue('')" placeholder="Search and select a status" autocomplete="off" class="h-8 w-full rounded-[4px] border border-line bg-white px-3 text-[12px] text-ink outline-none placeholder:text-[11px] placeholder:text-muted focus:border-teal" />
+            @if (statusOpen()) {
+              <div id="status-options" role="listbox" class="absolute top-[calc(100%+0.25rem)] right-0 left-0 z-10 rounded-[4px] border border-line bg-white p-1 shadow-[0_12px_32px_rgba(20,48,53,0.12)]">
+                @for (status of statuses(); track status) {
+                  <button type="button" role="option" [attr.aria-selected]="form.controls.status.value === status" (click)="selectStatus(status)" class="block w-full cursor-pointer rounded-[4px] border-0 bg-transparent px-3 py-2 text-left text-xs text-ink hover:bg-surface-soft focus-visible:bg-surface-soft">{{ status }}</button>
+                } @empty {
+                  <span class="block p-2 text-xs text-muted">No matching statuses</span>
+                }
+              </div>
+            }
+            @if (form.controls.status.touched && form.controls.status.invalid) {
+              <small class="mt-[0.45rem] block text-[0.7rem] text-[#b63d39]">Select a status.</small>
+            }
+          </div>
+          <div class="min-w-0">
+            <label for="basicSalary" class="mb-1 block text-xs font-bold text-ink">Basic salary <span class="text-teal">*</span></label>
+            <div class="flex h-8 overflow-hidden rounded-[4px] border border-line bg-white focus-within:border-teal">
+              <span class="flex items-center border-r border-line bg-surface-soft px-3 text-xs font-semibold text-ink">Rp</span>
+              <input id="basicSalary" type="text" inputmode="numeric" autocomplete="off" placeholder="e.g. 8.500.000" [value]="salaryDisplay()" (input)="updateSalary($any($event.target))" [attr.aria-invalid]="form.controls.basicSalary.touched && form.controls.basicSalary.invalid" [attr.aria-describedby]="form.controls.basicSalary.touched && form.controls.basicSalary.invalid ? 'basicSalary-error' : null" class="min-w-0 flex-1 border-0 bg-transparent px-3 text-[12px] text-ink outline-none placeholder:text-[11px] placeholder:text-muted" />
+            </div>
+            @if (form.controls.basicSalary.touched && form.controls.basicSalary.invalid) { <small id="basicSalary-error" class="mt-1.5 block text-xs text-red-700">Enter a valid, non-negative number.</small> }
+          </div>
+          <app-form-input fieldId="description" label="Description date and time" type="datetime-local" errorMessage="Description date and time is required." [required]="true" [compact]="true" [control]="form.controls.description" />
+        </div>
+      </section>
+    </form>
+    <p class="mt-4 text-[0.72rem] text-muted">Fields marked with * are required.</p>
+      </div>
+    </main>
+    <footer data-testid="add-footer" class="flex shrink-0 items-center justify-end gap-4 border-t border-line bg-white px-[clamp(1.25rem,3vw,3rem)] py-3 max-[560px]:gap-2 max-[560px]:px-5">
+      <a routerLink="/employees" class="inline-flex h-8 items-center justify-center px-3 text-xs font-semibold text-teal no-underline hover:text-[#1d665d] focus-visible:outline-2 focus-visible:outline-teal max-[560px]:flex-1">Cancel</a>
+      <button type="submit" form="add-employee-form" class="h-8 cursor-pointer rounded-[4px] border-0 bg-teal px-3 text-xs font-bold text-white hover:bg-[#1d665d] max-[560px]:flex-1">Save employee</button>
+    </footer>
+  </div>
+</div>
